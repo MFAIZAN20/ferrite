@@ -1,0 +1,56 @@
+[package]
+name = "ferrite"
+version = "0.1.0"
+edition = "2021"
+authors = ["Muhammad Faizan <mfkhalil683@gmail.com>"]
+description = "A fast, friendly HTTP client for the terminal"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/MFAIZAN20/ferrite"
+homepage = "https://github.com/MFAIZAN20/ferrite"
+documentation = "https://docs.rs/ferrite"
+keywords = ["http", "cli", "rest", "api", "curl"]
+categories = ["command-line-utilities", "web-programming::http-client"]
+readme = "README.md"
+exclude = [".github", "reengineering_outputs"]
+
+[features]
+default = []
+dynamic-plugins = ["dep:libloading"]
+
+[dependencies]
+reqwest = { version = "0.12", features = ["blocking", "json", "multipart", "cookies", "gzip", "brotli", "deflate", "native-tls"] }
+clap = { version = "4", features = ["derive", "color", "suggestions", "wrap_help"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+colored = "2"
+tokio = { version = "1", features = ["full"] }
+anyhow = "1"
+md-5 = "0.10"
+sha2 = "0.10"
+atty = "0.2"
+indicatif = "0.17"
+dirs = "5"
+libloading = { version = "0.8", optional = true }
+mime = "0.3"
+mime_guess = "2"
+url = "2"
+base64 = "0.22"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4"] }
+regex = "1"
+encoding_rs = "0.8"
+syntect = "5"
+xmltree = "0.10"
+console = "0.15"
+thiserror = "1"
+toml = "0.8"
+
+[dev-dependencies]
+mockito = "1"
+tempfile = "3"
+assert_cmd = "2"
+predicates = "3"
+
+[[bin]]
+name = "http"
+path = "src/main.rs"

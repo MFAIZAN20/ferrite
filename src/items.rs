@@ -104,13 +104,22 @@ pub fn parse_item(raw: &str) -> Result<RequestItem> {
         });
     }
 
-    if let Some((key, value)) = token.split_once(':') {
-        let key = validate_key(key, token)?;
-        let value = validate_non_empty(value.trim(), token, "header value")?;
-        return Ok(RequestItem::Header {
-            key: key.to_string(),
-            value: value.to_string(),
-        });
+    // Treat ":" as a header separator only when it appears before any
+    // request-item operator that would consume the key/value boundary.
+    // This keeps Windows file paths like C:\... valid in =@ and @ forms.
+    if let Some(colon_idx) = token.find(':') {
+        let before_eq_at = token.find("=@").is_none_or(|i| colon_idx < i);
+        let before_eq = token.find('=').is_none_or(|i| colon_idx < i);
+        let before_at = token.find('@').is_none_or(|i| colon_idx < i);
+        if before_eq_at && before_eq && before_at {
+            let (key, value) = token.split_at(colon_idx);
+            let key = validate_key(key, token)?;
+            let value = validate_non_empty(value[1..].trim(), token, "header value")?;
+            return Ok(RequestItem::Header {
+                key: key.to_string(),
+                value: value.to_string(),
+            });
+        }
     }
 
     if let Some((key, path)) = token.split_once("=@") {

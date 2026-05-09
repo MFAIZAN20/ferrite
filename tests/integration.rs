@@ -1,3 +1,6 @@
+#[path = "common/mod.rs"]
+mod common;
+
 #[path = "integration/auth_test.rs"]
 mod auth_test;
 #[path = "integration/collections_test.rs"]

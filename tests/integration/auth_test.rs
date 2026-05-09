@@ -1,10 +1,8 @@
-#[path = "../common/mod.rs"]
-mod common;
-
 use assert_cmd::Command;
 use base64::engine::general_purpose::STANDARD as BASE64;
 use base64::Engine;
 use tempfile::TempDir;
+use crate::common;
 
 fn ferrite(config_dir: &TempDir) -> Command {
     let mut cmd = Command::cargo_bin("http").expect("binary should build");
